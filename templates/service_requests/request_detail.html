@@ -1,0 +1,43 @@
+# templates/service_requests/request_detail.html
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h2>Service Request Details</h2>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">{{ service_request.get_request_type_display }}</h5>
+                <p class="card-text">{{ service_request.description }}</p>
+                <p><strong>Status:</strong> {{ service_request.get_status_display }}</p>
+                <p><strong>Created:</strong> {{ service_request.created_at|date:"M d, Y H:i" }}</p>
+                {% if service_request.attachment %}
+                    <p><strong>Attachment:</strong> <a href="{{ service_request.attachment.url }}">View File</a></p>
+                {% endif %}
+            </div>
+        </div>
+
+        <h3>Comments</h3>
+        {% for comment in service_request.comments.all %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <p class="card-text">{{ comment.comment }}</p>
+                    <small class="text-muted">By {{ comment.user.email }} on {{ comment.created_at|date:"M d, Y H:i" }}</small>
+                </div>
+            </div>
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+
+        <div class="mt-4">
+            <h4>Add Comment</h4>
+            <form method="post">
+                {% csrf_token %}
+                {{ comment_form|crispy }}
+                <button type="submit" class="btn btn-primary">Add Comment</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

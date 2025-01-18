@@ -1,0 +1,40 @@
+# templates/dashboard/customer_dashboard.html
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>My Service Requests</h2>
+<div class="row mt-4">
+    <div class="col">
+        <a href="{% url 'create_request' %}" class="btn btn-primary mb-3">Create New Request</a>
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Request Type</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Last Updated</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in service_requests %}
+                <tr>
+                    <td>{{ request.get_request_type_display }}</td>
+                    <td>{{ request.get_status_display }}</td>
+                    <td>{{ request.created_at|date:"M d, Y" }}</td>
+                    <td>{{ request.updated_at|date:"M d, Y" }}</td>
+                    <td>
+                        <a href="{% url 'request_detail' request.pk %}" class="btn btn-sm btn-info">View Details</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No service requests found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

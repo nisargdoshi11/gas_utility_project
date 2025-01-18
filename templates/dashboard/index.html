@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Gas Utility Service Portal{% endblock %}
+
+{% block content %}
+<div id="dashboardCharts">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="stats-card">
+                <h5>Active Requests</h5>
+                <div class="stats-number">{{ stats.active_requests_count }}</div>
+                <p>Current active service requests</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card">
+                <h5>Pending Approvals</h5>
+                <div class="stats-number">{{ stats.pending_approvals_count }}</div>
+                <p>Requests awaiting approval</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card">
+                <h5>Completed This Month</h5>
+                <div class="stats-number">{{ stats.completed_this_month }}</div>
+                <p>Successfully completed requests</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h5>Request Status Distribution</h5>
+                <canvas id="requestStatusChart" 
+                        data-pending="{{ stats.status_counts.pending }}"
+                        data-in-progress="{{ stats.status_counts.in_progress }}"
+                        data-resolved="{{ stats.status_counts.resolved }}"
+                        data-closed="{{ stats.status_counts.closed }}"
+                        height="200"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h5>Monthly Trends</h5>
+                <canvas id="monthlyTrendsChart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Recent Service Requests</h5>
+                    <a href="{% url 'service_requests:create' %}" class="btn btn-custom-primary">New Request</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in stats.recent_requests %}
+                                <tr>
+                                    <td>{{ request.request_id }}</td>
+                                    <td>{{ request.get_request_type_display }}</td>
+                                    <td>
+                                        <span class="status-{{ request.status|lower }}">
+                                            {{ request.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if request.priority == 'urgent' %}
+                                            <span class="priority-urgent">Urgent</span>
+                                        {% elif request.priority == 'high' %}
+                                            <span class="priority-high">High</span>
+                                        {% else %}
+                                            {{ request.get_priority_display }}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ request.created_at|date:"M d, Y" }}</td>
+                                    <td>
+                                        <a href="{% url 'service_requests:detail' request.id %}" 
+                                           class="btn btn-sm btn-custom-primary">View</a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center">No recent requests found.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Request Status Distribution Chart
+    const statusData = {
+        labels: ['Pending', 'In Progress', 'Resolved', 'Closed'],
+        datasets: [{
+            label: 'Request Status',
+            data: [
+                document.getElementById('requestStatusChart').dataset.pending,
+                document.getElementById('requestStatusChart').dataset.inProgress,
+                document.getElementById('requestStatusChart').dataset.resolved,
+                document.getElementById('requestStatusChart').dataset.closed
+            ],
+            backgroundColor: ['#ffcc00', '#66ccff', '#33cc33', '#ff6666'],
+            borderWidth: 1
+        }]
+    };
+
+    const statusConfig = {
+        type: 'pie',
+        data: statusData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return tooltipItem.raw + ' requests';
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    new Chart(document.getElementById('requestStatusChart'), statusConfig);
+
+    // Monthly Trends Chart (Placeholder data)
+    const monthlyData = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+            label: 'Requests per Month',
+            data: [12, 19, 3, 5, 2, 3, 6, 9, 14, 8, 16, 7],  // Example data
+            fill: false,
+            borderColor: '#4b9cd3',
+            tension: 0.1
+        }]
+    };
+
+    const monthlyConfig = {
+        type: 'line',
+        data: monthlyData,
+        options: {
+            responsive: true,
+            scales: {
+                x: { beginAtZero: true },
+                y: { beginAtZero: true }
+            }
+        }
+    };
+
+    new Chart(document.getElementById('monthlyTrendsChart'), monthlyConfig);
+</script>
+{% endblock %}
+{% endblock %}

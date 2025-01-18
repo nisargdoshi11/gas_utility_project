@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Service Requests - Gas Utility Portal{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Service Requests</h2>
+
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{% url 'service_requests:create' %}" class="btn btn-custom-primary">Create New Request</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Request ID</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in service_requests %}
+                    <tr>
+                        <td>{{ request.request_id }}</td>
+                        <td>{{ request.get_request_type_display }}</td>
+                        <td>
+                            <span class="status-{{ request.status|lower }}">
+                                {{ request.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if request.priority == 'urgent' %}
+                                <span class="priority-urgent">Urgent</span>
+                            {% elif request.priority == 'high' %}
+                                <span class="priority-high">High</span>
+                            {% else %}
+                                {{ request.get_priority_display }}
+                            {% endif %}
+                        </td>
+                        <td>{{ request.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <a href="{% url 'service_requests:detail' request.id %}" 
+                               class="btn btn-sm btn-custom-primary">View</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No service requests found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

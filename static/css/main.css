@@ -1,0 +1,134 @@
+/* static/css/main.css*/
+/* Main CSS Styles */
+:root {
+    --primary-color: #1a73e8;
+    --secondary-color: #5f6368;
+    --success-color: #0f9d58;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-gray: #f8f9fa;
+    --dark-gray: #343a40;
+}
+
+/* Layout */
+.main-container {
+    min-height: 100vh;
+    padding-bottom: 60px;
+}
+
+/* Navigation */
+.navbar-custom {
+    background-color: var(--primary-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-custom .navbar-brand {
+    color: white;
+    font-weight: 600;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Service Request Status Colors */
+.status-pending {
+    color: var(--warning-color);
+}
+
+.status-in-progress {
+    color: var(--info-color);
+}
+
+.status-resolved {
+    color: var(--success-color);
+}
+
+.status-closed {
+    color: var(--secondary-color);
+}
+
+/* Priority Indicators */
+.priority-urgent {
+    background-color: var(--danger-color);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.priority-high {
+    background-color: var(--warning-color);
+    color: black;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* Forms */
+.form-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25);
+}
+
+/* Comments Section */
+.comment-container {
+    border-left: 3px solid var(--primary-color);
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Responsive Tables */
+.table-responsive {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom Buttons */
+.btn-custom-primary {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.btn-custom-primary:hover {
+    background-color: #1557b0;
+    color: white;
+}
+
+/* static/css/dashboard.css */
+/* Dashboard-specific styles */
+.stats-card {
+    background: linear-gradient(135deg, var(--primary-color), #1557b0);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.stats-number {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.chart-container {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
