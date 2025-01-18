@@ -1,0 +1,65 @@
+
+gas_utility_project/
+│
+├── manage.py
+├── requirements.txt
+├── .env
+├── .gitignore
+│
+├── config/                     # Project configuration directory
+│   ├── __init__.py
+│   ├── settings/
+│   │   ├── __init__.py
+│   │   ├── base.py
+│   │   ├── development.py
+│   │   └── production.py
+│   ├── urls.py
+│   └── wsgi.py
+│
+├── apps/                      # Application modules directory
+│   ├── __init__.py
+│   │
+│   ├── accounts/             # User account management
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── forms.py
+│   │   ├── models.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   │
+│   ├── service_requests/     # Service request handling
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── forms.py
+│   │   ├── models.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   │
+│   └── dashboard/           # Customer & staff dashboards
+│       ├── __init__.py
+│       ├── admin.py
+│       ├── apps.py
+│       ├── forms.py
+│       ├── models.py
+│       ├── urls.py
+│       └── views.py
+│
+├── static/                  # Static files (CSS, JS, images)
+│   ├── css/
+│   ├── js/
+│   └── images/
+│
+├── templates/              # HTML templates
+│   ├── base.html
+│   ├── accounts/
+│   ├── service_requests/
+│   └── dashboard/
+│
+├── utils/                 # Utility functions and classes
+│   ├── __init__.py
+│   ├── constants.py
+│   └── helpers.py
+│
+└── media/                # User-uploaded files
